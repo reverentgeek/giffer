@@ -1,2 +1,5 @@
-# giffer
-Electron Gif Search Tool
+# Giffer
+
+This is an [Electron.js](https://electronjs.org/) demo application that searches gifs!
+
+
