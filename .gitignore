@@ -61,3 +61,6 @@ typings/
 .next
 
 .vscode
+.electron
+builds
+.DS_Store

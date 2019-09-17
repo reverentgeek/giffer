@@ -1,16 +1,20 @@
 {
   "name": "giffer",
-  "version": "0.1.0",
+  "productName": "Giffer",
+  "electron": "^6.0.9",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "electron src/main.js"
+    "start": "electron index.js",
+    "package": "electron-packager . --overwrite --prune=true --out=builds"
   },
   "keywords": [],
   "author": "David Neal <david@reverentgeek.com> (https://reverentgeek.com)",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^6.0.9"
+    "electron": "^6.0.9",
+    "electron-packager": "^14.0.6"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.10.2",

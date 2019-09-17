@@ -9,7 +9,7 @@ app.on( "ready", async () => {
       nodeIntegration: true
     }
   } );
-  await mainWindow.loadFile( "index.html" );
-  mainWindow.webContents.openDevTools( { mode: "detach" } );
+  await mainWindow.loadFile( "app.html" );
+  // mainWindow.webContents.openDevTools( { mode: "detach" } );
 } );
 
