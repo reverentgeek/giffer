@@ -2,75 +2,82 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Giffer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="./node_modules/bulma/css/bulma.css">
-    <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-    <style>
-        [v-cloak] {
-            display: none;
-        }
+	<meta charset="UTF-8">
+	<title>Giffer</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="./node_modules/bulma/css/bulma.css">
+	<link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+	<style>
+		[v-cloak] {
+			display: none;
+		}
 
-        body, section, .container, .columns {
-            width: 100vw;
-            height: 100vh;
-        }
-        form, .navbar-item, .field, #searchText { width: 100%; }
-    </style>
+		body,
+		section,
+		.container,
+		.columns {
+			width: 100vw;
+			height: 100vh;
+		}
+
+		form,
+		.navbar-item,
+		.field,
+		#searchText {
+			width: 100%;
+		}
+	</style>
 </head>
 
 <body>
-    <div id="app">
-    <nav class="navbar is-fixed-top has-background-grey-light is-flex is-flex-mobile is-flex-tablet is-flex-desktop" role="navigation" aria-label="main navigation">
-        <div class="navbar-item">
-            <form v-on:submit.prevent="search">
-            <div class="field has-addons">
-                <div class="control is-expanded">
-                    <input v-model="searchTerm" id="searchText" class="input" type="text" placeholder="Search for a gif...">
-                </div>
-                <div class="control">
-                    <button id="searchButton" class="button is-primary" :click="search">
-                    Search
-                    </button>
-                </div>
-            </div>
-            </form>
-        </div>
-    </nav>
-    <div>&nbps;</div>
-    <section class="section is-flex-desktop">
-        <div class="container">
-            <div v-if="noGifs" class="columns is-vcentered is-centered">
-                <span class="icon is-large">
-                    <i v-if="notSearching" class="fas fa-3x fa-atom has-text-grey-lighter"></i>
-                    <i v-if="searching" class="fas fa-3x fa-atom fa-spin"></i>
-                </span>
-            </div>
-            <div class="columns is-multiline">
-                <div v-for="gif in gifs" class="column is-one-third-tablet is-one-quarter-desktop">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image" 
-                                @mouseover="showGif(gif.id)"
-                                @mouseleave="hideGif(gif.id)">
-                                <img 
-                                    :src="gif.url"
-                                    :alt="gif.title"
-                                    >
-                                    <div class="card-content is-overlay" v-if="gif.showCopy">
-                                        <button @click="copy(gif.gif)" class="button is-small is-primary"><span class="far fa-copy"></span></button>
-                                    </div>
-                            </figure>
-                        </div>
-                    </div>
-                
-                </div>
-            </div>
-        </div>
-    </section>
-    </div>
-    <script src="app.js"></script>
+	<div id="app">
+		<nav class="navbar is-fixed-top has-background-grey-light is-flex is-flex-mobile is-flex-tablet is-flex-desktop"
+			role="navigation" aria-label="main navigation">
+			<div class="navbar-item">
+				<form v-on:submit.prevent="search">
+					<div class="field has-addons">
+						<div class="control is-expanded">
+							<input v-model="searchTerm" id="searchText" class="input" type="text"
+								placeholder="Search for a gif...">
+						</div>
+						<div class="control">
+							<button id="searchButton" class="button is-primary" :click="search">
+								Search
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</nav>
+		<div>&nbps;</div>
+		<section class="section is-flex-desktop">
+			<div class="container">
+				<div v-if="noGifs" class="columns is-vcentered is-centered">
+					<span class="icon is-large">
+						<i v-if="notSearching" class="fas fa-3x fa-atom has-text-grey-lighter"></i>
+						<i v-if="searching" class="fas fa-3x fa-atom fa-spin"></i>
+					</span>
+				</div>
+				<div class="columns is-multiline">
+					<div v-for="gif in gifs" class="column is-one-third-tablet is-one-quarter-desktop">
+						<div class="card">
+							<div class="card-image">
+								<figure class="image" @mouseover="showGif(gif.id)" @mouseleave="hideGif(gif.id)">
+									<img :src="gif.url" :alt="gif.title">
+									<div class="card-content is-overlay" v-if="gif.showCopy">
+										<button @click="copy(gif.gif)" class="button is-small is-primary"><span
+												class="far fa-copy"></span></button>
+									</div>
+								</figure>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<script src="app.js" type="module"></script>
 </body>
 
 </html>

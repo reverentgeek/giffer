@@ -1,24 +1,30 @@
 {
-  "name": "giffer",
-  "productName": "Giffer",
-  "electron": "^6.0.9",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "electron index.js",
-    "package": "electron-packager . --overwrite --prune=true --out=builds"
-  },
-  "keywords": [],
-  "author": "David Neal <david@reverentgeek.com> (https://reverentgeek.com)",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^33.2.0",
-    "electron-packager": "^17.1.2"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "6.6",
-    "bulma": "^1.0.2",
-    "vue": "^3.5.12"
-  }
+	"name": "giffer",
+	"productName": "Giffer",
+	"electron": "^6.0.9",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"engines": {
+		"node": ">=22.0.0"
+	},
+	"scripts": {
+		"start": "electron index.js",
+		"package": "electron-packager . --overwrite --prune=true --out=builds"
+	},
+	"keywords": [],
+	"author": "David Neal <david@reverentgeek.com> (https://reverentgeek.com)",
+	"license": "MIT",
+	"devDependencies": {
+		"electron": "^33.2.0",
+		"electron-packager": "^17.1.2",
+		"eslint": "^9.14.0",
+		"eslint-config-reverentgeek": "^5.1.0"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-free": "6.6",
+		"bulma": "^1.0.2",
+		"vue": "^3.5.12"
+	}
 }
