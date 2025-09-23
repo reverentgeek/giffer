@@ -1,14 +1,15 @@
+// eslint-disable-next-line n/no-unpublished-import
 import { createApp } from "./node_modules/vue/dist/vue.esm-browser.prod.js";
 const baseUrl = "https://api.giphy.com/v1/gifs/";
 const apiKey = "i7goGcrvAUuxtHjBUErmG7aaXSiLu14v";
 
 const searchApi = ( searchTerm ) => {
 	const url = `${ baseUrl }search?api_key=${ apiKey }&q=${ searchTerm }&limit=25&offset=0&rating=G&lang=en`;
-	return fetch( url ).then( res => {
+	return fetch( url ).then( ( res ) => {
 		return res.json();
 	} )
-		.then( json => {
-			return json.data.map( g => {
+		.then( ( json ) => {
+			return json.data.map( ( g ) => {
 				return {
 					id: g.id,
 					gif: g.images.downsized.url,
@@ -19,7 +20,7 @@ const searchApi = ( searchTerm ) => {
 				};
 			} );
 		} )
-		.catch( err => {
+		.catch( ( err ) => {
 			console.log( err );
 		} );
 };
@@ -33,32 +34,32 @@ createApp( {
 		};
 	},
 	computed: {
-		noGifs: function() {
+		noGifs: function () {
 			return this.gifs.length === 0;
 		},
-		notSearching: function() {
+		notSearching: function () {
 			return !this.searching;
 		}
 	},
 	methods: {
-		search: async function() {
+		search: async function () {
 			this.gifs = [];
 			this.searching = true;
 			const gifs = await searchApi( this.searchTerm );
 			this.gifs = gifs;
 			this.searching = false;
 		},
-		showGif: function( id ) {
+		showGif: function ( id ) {
 			const gif = this.gifs.find( x => x.id === id );
 			gif.url = gif.gif;
 			gif.showCopy = true;
 		},
-		hideGif: function( id ) {
+		hideGif: function ( id ) {
 			const gif = this.gifs.find( x => x.id === id );
 			gif.url = gif.preview;
 			gif.showCopy = false;
 		},
-		copy: function( gif ) {
+		copy: function ( gif ) {
 			console.log( gif );
 			self.clipboard.writeText( gif );
 		}
