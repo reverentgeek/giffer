@@ -12,27 +12,25 @@
 			display: none;
 		}
 
-		body,
-		section,
-		.container,
-		.columns {
-			width: 100vw;
-			height: 100vh;
+		form,
+		.navbar-item {
+			width: 100%;
 		}
 
-		form,
-		.navbar-item,
-		.field,
-		#searchText {
-			width: 100%;
+		.empty-state {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			min-height: calc(100vh - 10rem);
 		}
 	</style>
 </head>
 
-<body>
-	<div id="app">
-		<nav class="navbar is-fixed-top has-background-grey-light is-flex is-flex-mobile is-flex-tablet is-flex-desktop"
-			role="navigation" aria-label="main navigation">
+<body class="has-navbar-fixed-top">
+	<div id="app" v-cloak>
+		<nav class="navbar is-fixed-top has-background-grey-light is-flex" role="navigation"
+			aria-label="main navigation">
 			<div class="navbar-item">
 				<form v-on:submit.prevent="search">
 					<div class="field has-addons">
@@ -41,7 +39,7 @@
 								placeholder="Search for a gif...">
 						</div>
 						<div class="control">
-							<button id="searchButton" class="button is-primary" :click="search">
+							<button id="searchButton" class="button is-primary">
 								Search
 							</button>
 						</div>
@@ -49,29 +47,33 @@
 				</form>
 			</div>
 		</nav>
-		<div>&nbps;</div>
-		<section class="section is-flex-desktop">
+		<section class="section">
 			<div class="container">
-				<div v-if="noGifs" class="columns is-vcentered is-centered">
+				<div v-if="gifs.length === 0" class="empty-state">
 					<span class="icon is-large">
-						<i v-if="notSearching" class="fas fa-3x fa-atom has-text-grey-lighter"></i>
 						<i v-if="searching" class="fas fa-3x fa-atom fa-spin"></i>
+						<i v-else class="fas fa-3x fa-atom has-text-grey-lighter"></i>
 					</span>
+					<p v-if="error" class="has-text-danger mt-4">{{ error }}</p>
+					<p v-else-if="lastSearch && !searching" class="has-text-grey mt-4">
+						No gifs found for "{{ lastSearch }}"
+					</p>
 				</div>
-				<div class="columns is-multiline">
-					<div v-for="gif in gifs" class="column is-one-third-tablet is-one-quarter-desktop">
+				<div v-else class="columns is-multiline">
+					<div v-for="gif in gifs" :key="gif.id" class="column is-one-third-tablet is-one-quarter-desktop">
 						<div class="card">
 							<div class="card-image">
-								<figure class="image" @mouseover="showGif(gif.id)" @mouseleave="hideGif(gif.id)">
-									<img :src="gif.url" :alt="gif.title">
-									<div class="card-content is-overlay" v-if="gif.showCopy">
-										<button @click="copy(gif.gif)" class="button is-small is-primary"><span
-												class="far fa-copy"></span></button>
+								<figure class="image" @mouseenter="hoveredId = gif.id" @mouseleave="hoveredId = null">
+									<img :src="hoveredId === gif.id ? gif.gif : gif.preview" :alt="gif.title">
+									<div class="card-content is-overlay" v-if="hoveredId === gif.id">
+										<button @click="copy(gif)" class="button is-small is-primary"
+											:title="copiedId === gif.id ? 'Copied!' : 'Copy gif URL'">
+											<span :class="copiedId === gif.id ? 'fas fa-check' : 'far fa-copy'"></span>
+										</button>
 									</div>
 								</figure>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>

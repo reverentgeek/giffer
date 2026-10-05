@@ -1,4 +1,6 @@
+# electron-packager can't follow pnpm's symlinked node_modules
+nodeLinker: hoisted
 allowBuilds:
-  electron: set this to true or false
+  electron: true
 onlyBuiltDependencies:
   - electron

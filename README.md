@@ -11,13 +11,16 @@ Website: [reverentgeek.com](https://reverentgeek.com) | Twitter: [@reverentgeek]
 ## Development Setup
 
 * Download and install [Node.js](https://nodejs.org)
+* Install [pnpm](https://pnpm.io/installation)
 * Clone this repository
-* Run `npm install`
-* Start application using `npm start`
+* Run `pnpm install`
+* Start application using `pnpm start`
+
+The app uses a public beta [GIPHY API](https://developers.giphy.com/) key that is rate limited. If searches start failing, create your own key and replace `apiKey` in `app.js`.
 
 ## Build a Stand-alone App
 
 * Complete the development setup steps above
-* Run `npm run package`
+* Run `pnpm package`
 
 The electron packager will build an application based on your current OS and place it in the `builds` folder.

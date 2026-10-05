@@ -6,40 +6,28 @@ export default defineConfig( [ {
 	extends: [ rg.configs["node-esm"] ],
 	rules: {
 		"n/no-unpublished-import": [ "error", {
-			allowModules: [ "eslint-config-reverentgeek", "electron" ]
+			allowModules: [ "eslint-config-reverentgeek", "electron", "globals" ]
 		} ],
-		"n/no-extraneous-import": [ "error", {
-			allowModules: [ "globals" ]
+		"n/no-unsupported-features/node-builtins": [ "error", {
+			ignores: [ "import.meta.dirname" ]
 		} ]
 	}
 }, {
-	files: [ "app*.js", "app*.mjs" ],
+	files: [ "**/*.cjs" ],
+	languageOptions: {
+		sourceType: "commonjs",
+		globals: globals.node
+	},
+	rules: {
+		"n/no-unpublished-require": [ "error", {
+			allowModules: [ "electron" ]
+		} ]
+	}
+}, {
+	files: [ "app.js" ],
 	languageOptions: {
 		ecmaVersion: "latest",
 		sourceType: "module",
 		globals: globals.browser
 	}
 } ] );
-
-// import rg from "eslint-config-reverentgeek";
-
-// export default [
-//     ...rg.configs[ "node-esm" ],
-//     {
-//         rules: {
-//             "n/no-unpublished-import": [ "error", {
-//                 allowModules: [ "eslint-config-reverentgeek", "electron" ]
-//             } ],
-//             "n/no-extraneous-import": [ "error", {
-//                 allowModules: [ "globals" ]
-//             } ]
-//         }
-//     }, {
-//         files: [ "app*.js", "app*.mjs" ],
-//         languageOptions: {
-//             ecmaVersion: "latest",
-//             sourceType: "module",
-//             globals: globals.browser
-//         }
-//     }
-// ];

@@ -1,18 +1,18 @@
 {
 	"name": "giffer",
 	"productName": "Giffer",
-	"electron": "^6.0.9",
 	"version": "1.1.2",
-	"description": "",
+	"description": "Electron demo app for finding that perfect reaction gif",
 	"main": "index.js",
 	"type": "module",
+	"packageManager": "pnpm@12.9.1",
 	"engines": {
 		"node": ">=22.16.0"
 	},
 	"scripts": {
 		"lint": "eslint --fix",
 		"start": "electron index.js",
-		"package": "npx @electron/packager . --overwrite --prune=true --out=builds"
+		"package": "electron-packager . --overwrite --prune=true --out=builds"
 	},
 	"keywords": [],
 	"author": "David Neal <david@reverentgeek.com> (https://reverentgeek.com)",
@@ -21,7 +21,8 @@
 		"@electron/packager": "^20.3.0",
 		"electron": "^44.5.1",
 		"eslint": "^10.12.0",
-		"eslint-config-reverentgeek": "^7.1.23"
+		"eslint-config-reverentgeek": "^7.1.23",
+		"globals": "^17.13.0"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^7.3.1",
