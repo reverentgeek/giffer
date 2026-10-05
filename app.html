@@ -16,10 +16,37 @@
 			width: 100%;
 		}
 
+		.navbar {
+			border-bottom: 1px solid var(--bulma-border-weak);
+		}
+
+		.navbar-item {
+			padding-inline: 1rem;
+		}
+
+		.navbar .field.has-addons {
+			border-radius: var(--bulma-radius);
+		}
+
+		.navbar .field.has-addons:focus-within {
+			outline: 2px solid var(--bulma-primary);
+			outline-offset: 2px;
+		}
+
+		.navbar .input:focus,
+		.navbar .input:focus-within {
+			border-color: var(--bulma-input-border-color);
+			box-shadow: none;
+			outline: none;
+		}
+
 		.empty-state {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			flex-direction: column;
+			gap: 0.5rem;
+			text-align: center;
 			min-height: calc(100vh - 8rem);
 		}
 
@@ -44,7 +71,24 @@
 			display: block;
 			width: 100%;
 			height: 100%;
-			object-fit: cover;
+			object-fit: contain;
+		}
+
+		.gif:focus-visible {
+			outline: 3px solid var(--bulma-primary);
+			outline-offset: 3px;
+		}
+
+		.sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
+			border: 0;
 		}
 
 		.copied {
@@ -61,7 +105,7 @@
 
 <body class="has-navbar-fixed-top">
 	<div id="app" v-cloak>
-		<nav class="navbar is-fixed-top has-shadow is-flex" role="navigation" aria-label="main navigation">
+		<nav class="navbar is-fixed-top is-flex" role="navigation" aria-label="main navigation">
 			<div class="navbar-item">
 				<form v-on:submit.prevent="search">
 					<div class="field has-addons">
@@ -71,7 +115,7 @@
 						</div>
 						<div class="control">
 							<button id="searchButton" class="button is-primary" :class="{ 'is-loading': searching }"
-								:disabled="!searchTerm.trim()">
+								:disabled="!searchTerm.trim() || searching">
 								Search
 							</button>
 						</div>
@@ -80,20 +124,32 @@
 			</div>
 		</nav>
 		<section class="section p-4">
+			<p class="sr-only" role="status" aria-live="polite" aria-atomic="true">{{ status }}</p>
 			<div v-if="gifs.length === 0" class="empty-state">
 				<p v-if="error" class="has-text-danger">{{ error }}</p>
-				<p v-else-if="!searching" class="has-text-grey">
-					{{ lastSearch ? `No gifs found for "${ lastSearch }"` : "Search for a gif, then click it to copy its URL" }}
-				</p>
+				<p v-else-if="searching" class="has-text-grey">Searching…</p>
+				<template v-else-if="lastSearch">
+					<p>No GIFs found for "{{ lastSearch }}"</p>
+					<p class="has-text-grey is-size-7">Try a different keyword.</p>
+				</template>
+				<template v-else>
+					<p class="is-size-5">Find a reaction GIF</p>
+					<p class="has-text-grey is-size-7">Search above, then click a GIF to copy its URL.</p>
+				</template>
 			</div>
-			<div v-else class="gifs">
-				<button v-for="gif in gifs" :key="gif.id" class="gif" title="Click to copy gif URL" @click="copy(gif)"
-					@mouseenter="activeId = gif.id" @mouseleave="activeId = null" @focus="activeId = gif.id"
-					@blur="activeId = null">
-					<img :src="activeId === gif.id ? gif.animated : gif.still" :alt="gif.title">
-					<span v-if="copiedId === gif.id" class="copied">Copied!</span>
+			<template v-else>
+				<p class="has-text-grey is-size-7 mb-3">Hover to preview · Click to copy URL</p>
+				<p v-if="copyError" class="has-text-danger is-size-7 mb-3" role="alert">{{ copyError }}</p>
+				<div class="gifs">
+					<button v-for="gif in gifs" :key="gif.id" class="gif" title="Click to copy gif URL" @click="copy(gif)"
+						:aria-label="`Copy URL for ${ gif.title || 'GIF' }`"
+						@mouseenter="activeId = gif.id" @mouseleave="activeId = null" @focus="activeId = gif.id"
+						@blur="activeId = null">
+						<img :src="activeId === gif.id ? gif.animated : gif.still" :alt="gif.title">
+						<span v-if="copiedId === gif.id" class="copied">Copied!</span>
 				</button>
-			</div>
+				</div>
+			</template>
 			<p class="has-text-centered has-text-grey is-size-7 mt-4">Powered by GIPHY</p>
 		</section>
 	</div>

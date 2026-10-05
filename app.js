@@ -36,6 +36,9 @@ createApp( {
 			gifs: [],
 			searching: false,
 			error: "",
+			copyError: "",
+			status: "",
+			copyTimer: null,
 			activeId: null,
 			copiedId: null
 		};
@@ -52,25 +55,38 @@ createApp( {
 			}
 			this.gifs = [];
 			this.error = "";
+			this.copyError = "";
+			this.copiedId = null;
+			this.status = "Searching…";
 			this.searching = true;
 			try {
 				this.gifs = await searchApi( term );
 				this.lastSearch = term;
+				this.status = this.gifs.length ? `${ this.gifs.length } GIFs found.` : `No GIFs found for ${ term }. Try a different keyword.`;
 			} catch ( err ) {
 				console.error( err );
 				this.error = "Something went wrong searching for gifs. Please try again.";
+				this.status = this.error;
 			} finally {
 				this.searching = false;
 			}
 		},
 		copy: async function ( gif ) {
-			await window.clipboard.writeText( gif.url );
-			this.copiedId = gif.id;
-			setTimeout( () => {
-				if ( this.copiedId === gif.id ) {
+			clearTimeout( this.copyTimer );
+			this.copiedId = null;
+			this.copyError = "";
+			this.status = "";
+			try {
+				await window.clipboard.writeText( gif.url );
+				this.copiedId = gif.id;
+				this.status = "Copied!";
+				this.copyTimer = setTimeout( () => {
 					this.copiedId = null;
-				}
-			}, 1500 );
+				}, 1500 );
+			} catch ( err ) {
+				console.error( err );
+				this.copyError = "Couldn’t copy. Try again.";
+			}
 		}
 	}
 } ).mount( "#app" );
