@@ -20,8 +20,9 @@ const searchApi = async ( searchTerm ) => {
 	return json.data.map( ( g ) => {
 		return {
 			id: g.id,
-			gif: g.images.downsized.url,
-			preview: g.images["480w_still"].url,
+			url: g.images.downsized.url,
+			animated: g.images.fixed_width.url,
+			still: g.images.fixed_width_still.url,
 			title: g.title
 		};
 	} );
@@ -35,18 +36,26 @@ createApp( {
 			gifs: [],
 			searching: false,
 			error: "",
-			hoveredId: null,
+			activeId: null,
 			copiedId: null
 		};
 	},
+	mounted() {
+		// wait for v-cloak to be removed so the input is focusable
+		this.$nextTick( () => this.$refs.searchText.focus() );
+	},
 	methods: {
 		search: async function () {
+			const term = this.searchTerm.trim();
+			if ( !term || this.searching ) {
+				return;
+			}
 			this.gifs = [];
 			this.error = "";
 			this.searching = true;
 			try {
-				this.gifs = await searchApi( this.searchTerm );
-				this.lastSearch = this.searchTerm;
+				this.gifs = await searchApi( term );
+				this.lastSearch = term;
 			} catch ( err ) {
 				console.error( err );
 				this.error = "Something went wrong searching for gifs. Please try again.";
@@ -55,7 +64,7 @@ createApp( {
 			}
 		},
 		copy: async function ( gif ) {
-			await window.clipboard.writeText( gif.gif );
+			await window.clipboard.writeText( gif.url );
 			this.copiedId = gif.id;
 			setTimeout( () => {
 				if ( this.copiedId === gif.id ) {
